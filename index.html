@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Portal - Pakistan's #1 Verified Jobs Platform</title>
+  <meta name="description" content="Find the latest verified government and private jobs across Pakistan. Karachi, Lahore, Islamabad, and remote opportunities.">
+  
+  <!-- Google Fonts & Font Awesome for icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div class="top-announcement">
+    <div class="container announcement-inner">
+      <div class="live-status">
+        <span class="live-dot pulse"></span>
+        <span class="status-text"><strong>LIVE UPDATES:</strong> Pakistan Verified Jobs Feed active</span>
+      </div>
+      <div class="sync-actions">
+        <span id="lastSyncTime">Last checked: Just now</span>
+        <button id="manualSyncBtn" class="btn-text-sync" title="Check for new jobs across Pakistan">
+          <i class="fa-solid fa-arrows-rotate"></i> Check New Jobs
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <header class="main-header">
+    <div class="container nav-wrapper">
+      <div class="brand-logo">
+        <a href="#home" class="logo">
+          <div class="logo-icon">
+            <i class="fa-solid fa-briefcase"></i>
+          </div>
+          <div class="logo-text">
+            <span class="brand-name">Job <span class="highlight">Portal</span></span>
+            <span class="brand-tagline">Pakistan's Verified Network</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="nav-menu" id="navMenu">
+        <a href="#home" class="nav-link active"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="#jobs-section" class="nav-link"><i class="fa-solid fa-magnifying-glass"></i> Browse Jobs</a>
+        <a href="#categories-section" class="nav-link"><i class="fa-solid fa-layer-group"></i> Categories</a>
+        <a href="#news-section" class="nav-link nav-news"><i class="fa-solid fa-newspaper"></i> News <span class="badge-pill">New</span></a>
+        <a href="#saved-jobs" class="nav-link" id="savedJobsNavBtn">
+          <i class="fa-solid fa-bookmark"></i> Saved (<span id="savedCount">0</span>)
+        </a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="btn btn-outline" id="openPostJobModal">
+          <i class="fa-solid fa-circle-plus"></i> Post a Job
+        </button>
+        <button class="mobile-toggle" id="mobileMenuBtn" aria-label="Toggle navigation">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <i class="fa-solid fa-shield-halved"></i> 100% Verified Pakistan Jobs Only
+          </div>
+          <h1 class="hero-title">
+            Apni Pasand Ki Verified Job Dhoondein <br>
+            <span class="gradient-text">Har Shehar, Har Field Mein</span>
+          </h1>
+          <p class="hero-subtitle">
+            Government (FPSC, PPSC, NTS), Private Sector, Banking, IT & Remote Pakistan jobs.
+            Har new job real-time verify ho kar fauran yahan aati hai.
+          </p>
+
+          <!-- Search Bar Container -->
+          <div class="search-box-card">
+            <form id="jobSearchForm" class="search-form" onsubmit="event.preventDefault();">
+              <div class="search-group">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="keywordInput" placeholder="Job Title, Skills, ya Company (e.g. Software, Bank, Lecturer)..." autocomplete="off">
+              </div>
+
+              <div class="search-divider"></div>
+
+              <div class="search-group">
+                <i class="fa-solid fa-location-dot search-icon"></i>
+                <select id="locationSelect">
+                  <option value="all">Sari Locations (All Pakistan)</option>
+                  <option value="Karachi">Karachi, Sindh</option>
+                  <option value="Lahore">Lahore, Punjab</option>
+                  <option value="Islamabad">Islamabad (Federal)</option>
+                  <option value="Rawalpindi">Rawalpindi</option>
+                  <option value="Faisalabad">Faisalabad</option>
+                  <option value="Peshawar">Peshawar, KPK</option>
+                  <option value="Quetta">Quetta, Balochistan</option>
+                  <option value="Multan">Multan</option>
+                  <option value="Sialkot">Sialkot</option>
+                  <option value="Remote Pakistan">Remote (Work from Home)</option>
+                </select>
+              </div>
+
+              <div class="search-divider"></div>
+
+              <div class="search-group">
+                <i class="fa-solid fa-building-columns search-icon"></i>
+                <select id="categorySelect">
+                  <option value="all">Sari Categories</option>
+                  <option value="Government">Government / Public Sector</option>
+                  <option value="IT & Software">IT & Software</option>
+                  <option value="Banking & Finance">Banking & Finance</option>
+                  <option value="Health & Medical">Healthcare & Hospital</option>
+                  <option value="Education">Education & Teaching</option>
+                  <option value="Engineering">Engineering & Construction</option>
+                  <option value="Marketing & Sales">Marketing & Sales</option>
+                </select>
+              </div>
+
+              <button type="submit" class="btn btn-primary search-btn" id="searchSubmitBtn">
+                <i class="fa-solid fa-arrow-right"></i> Search Jobs
+              </button>
+            </form>
+
+            <!-- Popular Quick Tags -->
+            <div class="quick-tags">
+              <span class="quick-label">Popular Searches:</span>
+              <button class="tag-btn" data-tag="FPSC">FPSC Jobs</button>
+              <button class="tag-btn" data-tag="PPSC">PPSC Lecturer</button>
+              <button class="tag-btn" data-tag="Remote">Remote</button>
+              <button class="tag-btn" data-tag="Bank">Bank Al-Habib / HBL</button>
+              <button class="tag-btn" data-tag="Developer">Software Engineer</button>
+              <button class="tag-btn" data-tag="Fresh">Fresh Graduates</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metric Highlights -->
+        <div class="hero-stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-check-double"></i></div>
+            <div class="stat-info">
+              <h3 id="statTotalJobs">250+</h3>
+              <p>Active Verified Jobs</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-city"></i></div>
+            <div class="stat-info">
+              <h3>35+</h3>
+              <p>Pakistani Cities</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-building-circle-check"></i></div>
+            <div class="stat-info">
+              <h3>100%</h3>
+              <p>Official Verification</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-bolt"></i></div>
+            <div class="stat-info">
+              <h3>Real-Time</h3>
+              <p>Auto Job Sync</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="section categories-section" id="categories-section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Explore by Sector</h2>
+            <p class="section-subtitle">Top employment sectors across government and private industries</p>
+          </div>
+        </div>
+
+        <div class="categories-grid">
+          <div class="category-card" data-cat="Government">
+            <div class="cat-icon govt"><i class="fa-solid fa-landmark-flag"></i></div>
+            <h4>Government / Public Sector</h4>
+            <span class="cat-count">FPSC, PPSC, SPSC, BPS-16 to 19</span>
+          </div>
+
+          <div class="category-card" data-cat="IT & Software">
+            <div class="cat-icon it"><i class="fa-solid fa-laptop-code"></i></div>
+            <h4>IT & Software Development</h4>
+            <span class="cat-count">Web, AI, Mobile, Cloud, SQA</span>
+          </div>
+
+          <div class="category-card" data-cat="Banking & Finance">
+            <div class="cat-icon bank"><i class="fa-solid fa-coins"></i></div>
+            <h4>Banking & Islamic Finance</h4>
+            <span class="cat-count">HBL, Meezan, SBP, UBL, MCB</span>
+          </div>
+
+          <div class="category-card" data-cat="Health & Medical">
+            <div class="cat-icon medical"><i class="fa-solid fa-user-doctor"></i></div>
+            <h4>Health & Medical Services</h4>
+            <span class="cat-count">Doctors, Nurses, Pharmacists</span>
+          </div>
+
+          <div class="category-card" data-cat="Education">
+            <div class="cat-icon edu"><i class="fa-solid fa-graduation-cap"></i></div>
+            <h4>Education & Universities</h4>
+            <span class="cat-count">Professors, Lecturers, School Staff</span>
+          </div>
+
+          <div class="category-card" data-cat="Engineering">
+            <div class="cat-icon eng"><i class="fa-solid fa-gears"></i></div>
+            <h4>Engineering & Technical</h4>
+            <span class="cat-count">Electrical, Civil, Mechanical</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Job Listings Section -->
+    <section class="section jobs-section" id="jobs-section">
+      <div class="container">
+        <div class="section-header flex-header">
+          <div>
+            <div class="live-pill"><i class="fa-solid fa-satellite-dish"></i> Live Feed Enabled</div>
+            <h2 class="section-title">Latest Verified Jobs in Pakistan</h2>
+            <p class="section-subtitle">Real-time updated job listings directly from official sources</p>
+          </div>
+
+          <!-- Sort and View controls -->
+          <div class="feed-controls">
+            <div class="auto-sync-toggle">
+              <label class="switch">
+                <input type="checkbox" id="liveSyncToggle" checked>
+                <span class="slider round"></span>
+              </label>
+              <span class="switch-label">Auto-Detect New Jobs</span>
+            </div>
+
+            <div class="sort-wrapper">
+              <label for="sortBySelect">Sort by:</label>
+              <select id="sortBySelect">
+                <option value="newest">Latest Posted</option>
+                <option value="salary-high">Salary: High to Low</option>
+                <option value="deadline">Approaching Deadline</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="jobs-layout">
+          <!-- Sidebar Filters -->
+          <aside class="filters-sidebar" id="filtersSidebar">
+            <div class="filter-card">
+              <div class="filter-header">
+                <h3><i class="fa-solid fa-sliders"></i> Filter Jobs</h3>
+                <button id="resetFiltersBtn" class="btn-link">Reset</button>
+              </div>
+
+              <!-- Sector Type Filter -->
+              <div class="filter-group">
+                <label class="filter-label">Job Sector</label>
+                <div class="checkbox-list">
+                  <label class="custom-checkbox">
+                    <input type="checkbox" name="sector" value="Government" class="filter-checkbox">
+                    <span class="checkmark"></span>
+                    Government (Govt / BPS)
+                  </label>
+                  <label class="custom-checkbox">
+                    <input type="checkbox" name="sector" value="Private" class="filter-checkbox">
+                    <span class="checkmark"></span>
+                    Private Companies
+                  </label>
+                  <label class="custom-checkbox">
+                    <input type="checkbox" name="sector" value="Semi-Govt" class="filter-checkbox">
+                    <span class="checkmark"></span>
+                    Semi-Govt / Autonomous
+                  </label>
+                </div>
+              </div>
+
+              <!-- Employment Type -->
+              <div class="filter-group">
+                <label class="filter-label">Job Type</label>
+                <div class="checkbox-list">
+                  <label class="custom-checkbox">
+                    <input type="checkbox" name="jobType" value="Full-Time" class="filter-checkbox">
+                    <span class="checkmark"></span>
+                    Full-Time
+                  </label>
+                  <label class="custom-checkbox">
+                    <input type="checkbox" name="jobType" value="Remote" class="filter-checkbox">
+                    <span class="checkmark"></span>
+                    Remote / Work from home
+                  </label>
+                  <label class="custom-checkbox">
+                    <input type="checkbox" name="jobType" value="Part-Time" class="filter-checkbox">
+                    <span class="checkmark"></span>
+                    Part-Time
+                  </label>
+                  <label class="custom-checkbox">
+                    <input type="checkbox" name="jobType" value="Contract" class="filter-checkbox">
+                    <span class="checkmark"></span>
+                    Contract / Project Base
+                  </label>
+                </div>
+              </div>
+
+              <!-- Experience Level -->
+              <div class="filter-group">
+                <label class="filter-label">Experience Required</label>
+                <div class="checkbox-list">
+                  <label class="custom-checkbox">
+                    <input type="checkbox" name="experience" value="Fresh" class="filter-checkbox">
+                    <span class="checkmark"></span>
+                    Fresh / Entry Level (0-1 yr)
+                  </label>
+                  <label class="custom-checkbox">
+                    <input type="checkbox" name="experience" value="Mid-Level" class="filter-checkbox">
+                    <span class="checkmark"></span>
+                    Mid-Level (2-4 yrs)
+                  </label>
+                  <label class="custom-checkbox">
+                    <input type="checkbox" name="experience" value="Senior" class="filter-checkbox">
+                    <span class="checkmark"></span>
+                    Senior Level (5+ yrs)
+                  </label>
+                </div>
+              </div>
+
+              <!-- Verified Verification Toggle -->
+              <div class="filter-group verification-highlight-box">
+                <div class="verify-head">
+                  <i class="fa-solid fa-circle-check text-success"></i>
+                  <div>
+                    <strong>Verification Guarantee</strong>
+                    <p class="small-text">Har job official advertisement ya company letter se match ki gayi hai.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Job Cards Feed -->
+          <div class="jobs-feed-column">
+            <!-- Active Filter Chips -->
+            <div class="active-chips-bar" id="activeChipsBar" style="display: none;">
+              <span class="chips-title">Active Filters:</span>
+              <div class="chips-list" id="chipsList"></div>
+              <button id="clearAllChips" class="clear-chips-btn">Clear All</button>
+            </div>
+
+            <!-- New Incoming Jobs Notification Toast inside feed -->
+            <div id="newJobsBanner" class="new-jobs-banner" style="display: none;">
+              <i class="fa-solid fa-bell"></i>
+              <span id="newJobsBannerText">1 New Verified Job Detected!</span>
+              <button id="loadNewJobsBtn" class="btn btn-sm btn-light">View Now</button>
+            </div>
+
+            <!-- Job Listings Container -->
+            <div class="jobs-list" id="jobsListContainer">
+              <!-- Dynamically populated via JavaScript -->
+            </div>
+
+            <!-- No Results State -->
+            <div class="no-results" id="noResultsState" style="display: none;">
+              <div class="no-results-icon">
+                <i class="fa-solid fa-folder-open"></i>
+              </div>
+              <h3>Koi Job Nahi Mili</h3>
+              <p>Aapke search criteria ke mutabiq filhal koi verified job available nahi hai. Filter reset karke dobara koshish karein.</p>
+              <button id="clearFiltersFromEmpty" class="btn btn-primary">Reset Filters</button>
+            </div>
+
+            <!-- Pagination / Load More -->
+            <div class="pagination-wrapper" id="paginationWrapper">
+              <button class="btn btn-outline load-more-btn" id="loadMoreBtn">
+                <i class="fa-solid fa-angles-down"></i> Load More Verified Jobs
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- News Section (Intentionally Blank / Placeholder as requested) -->
+    <section class="section news-section" id="news-section">
+      <div class="container">
+        <div class="section-header">
+          <div class="news-tag"><i class="fa-solid fa-bullhorn"></i> Official Announcements & Updates</div>
+          <h2 class="section-title">Job News & Employment Updates</h2>
+          <p class="section-subtitle">Khabrein, Govt notifications, exam dates, aur career guidelines</p>
+        </div>
+
+        <!-- Blank News Section Container -->
+        <div class="blank-news-container">
+          <div class="blank-state-card">
+            <div class="blank-icon">
+              <i class="fa-regular fa-newspaper"></i>
+            </div>
+            <h3 class="blank-title">News Section Currently Blank</h3>
+            <p class="blank-desc">
+              Yahan par jald hi Pakistan bharke education boards, FPSC/PPSC notifications, naye policies aur career news show hongi.
+              Abhi yeh section reserved aur blank rakha gaya hai.
+            </p>
+            <div class="blank-badge">
+              <i class="fa-solid fa-clock"></i> Coming Soon / Updates Reserved
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works / Verification Process -->
+    <section class="section verification-info-section">
+      <div class="container">
+        <div class="section-header text-center">
+          <h2 class="section-title">How We Verify Every Job</h2>
+          <p class="section-subtitle">Pakistan mein fake jobs se bachane ke liye humara 3-step verification process</p>
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <div class="step-icon"><i class="fa-solid fa-file-invoice"></i></div>
+            <h3>Gazette & Ad Cross-Check</h3>
+            <p>Har government job ko official Gazette of Pakistan ya newspaper advertisement se match kiya jata hai.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <div class="step-icon"><i class="fa-solid fa-envelope-circle-check"></i></div>
+            <h3>Official Domain Verification</h3>
+            <p>Private aur corporate jobs direct company ke official career portals aur verified HR emails se aati hain.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <div class="step-icon"><i class="fa-solid fa-shield-virus"></i></div>
+            <h3>No Application Fee Scams</h3>
+            <p>Kisi bhi fake agency ya unverified bank accounts par fees mangne wali listings ko block kiya jata hai.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="container footer-content">
+      <div class="footer-col brand-col">
+        <div class="logo">
+          <div class="logo-icon"><i class="fa-solid fa-briefcase"></i></div>
+          <span class="brand-name">Job <span class="highlight">Portal</span></span>
+        </div>
+        <p class="footer-about">
+          Pakistan's reliable destination for verified career opportunities. Helping Pakistani youth, professionals, and fresh graduates find authentic jobs.
+        </p>
+        <div class="social-links">
+          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Top Cities</h4>
+        <ul>
+          <li><a href="#" class="city-filter-link" data-city="Karachi">Jobs in Karachi</a></li>
+          <li><a href="#" class="city-filter-link" data-city="Lahore">Jobs in Lahore</a></li>
+          <li><a href="#" class="city-filter-link" data-city="Islamabad">Jobs in Islamabad</a></li>
+          <li><a href="#" class="city-filter-link" data-city="Peshawar">Jobs in Peshawar</a></li>
+          <li><a href="#" class="city-filter-link" data-city="Remote Pakistan">Remote Jobs Pakistan</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Government Portals</h4>
+        <ul>
+          <li><a href="https://fpsc.gov.pk" target="_blank" rel="noopener">FPSC Official</a></li>
+          <li><a href="https://ppsc.gop.pk" target="_blank" rel="noopener">PPSC Punjab</a></li>
+          <li><a href="https://spsc.gov.pk" target="_blank" rel="noopener">SPSC Sindh</a></li>
+          <li><a href="https://nts.org.pk" target="_blank" rel="noopener">NTS Pakistan</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Real-Time Sync Engine</h4>
+        <p class="engine-desc">
+          Automated web scrapers & RSS feed connectors check Pakistani newspaper ads and portals every 5 minutes.
+        </p>
+        <div class="system-status-box">
+          <span class="status-dot"></span>
+          <span>Feed Engine Status: <strong>Online</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container footer-bottom-inner">
+        <p>© 2026 Job Portal Pakistan. All rights reserved.</p>
+        <p>100% Free & Verified Public Service.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= MODALS ================= -->
+
+  <!-- 1. Job Details Modal -->
+  <div class="modal-overlay" id="jobDetailsModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-company-info">
+          <div class="modal-logo" id="modalCompanyLogo">PK</div>
+          <div>
+            <h2 id="modalJobTitle">Job Title</h2>
+            <div class="modal-subhead">
+              <span id="modalCompanyName">Company Name</span>
+              <span class="dot">•</span>
+              <span id="modalLocation"><i class="fa-solid fa-location-dot"></i> Location</span>
+              <span class="verified-badge-pill" id="modalVerifyBadge">
+                <i class="fa-solid fa-circle-check"></i> Verified
+              </span>
+            </div>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="closeDetailsModalBtn" aria-label="Close modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Quick Info Ribbon -->
+        <div class="modal-quick-ribbon">
+          <div class="ribbon-item">
+            <span class="label">Salary / Pay Scale</span>
+            <strong id="modalSalary">Rs 80,000 - 120,000 / month</strong>
+          </div>
+          <div class="ribbon-item">
+            <span class="label">Job Type</span>
+            <strong id="modalJobType">Full-Time</strong>
+          </div>
+          <div class="ribbon-item">
+            <span class="label">Experience</span>
+            <strong id="modalExperience">2-3 Years</strong>
+          </div>
+          <div class="ribbon-item">
+            <span class="label">Last Date to Apply</span>
+            <strong id="modalDeadline" class="text-danger">15 Dec 2026</strong>
+          </div>
+        </div>
+
+        <!-- Verification Proof Box -->
+        <div class="verification-proof-box">
+          <i class="fa-solid fa-shield-halved verify-icon"></i>
+          <div>
+            <h4>Verification Proof & Source</h4>
+            <p id="modalVerifySource">Official advertisement verified against Government Gazette / Corporate Career Domain.</p>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="modal-section">
+          <h3>Job Description</h3>
+          <p id="modalDescription">Detailed job description goes here...</p>
+        </div>
+
+        <!-- Requirements -->
+        <div class="modal-section">
+          <h3>Requirements & Qualifications</h3>
+          <ul class="requirements-list" id="modalRequirements">
+            <!-- Dynamic items -->
+          </ul>
+        </div>
+
+        <!-- How to Apply -->
+        <div class="modal-section apply-instructions-box">
+          <h3><i class="fa-solid fa-circle-info"></i> How to Apply</h3>
+          <p id="modalHowToApply">Visit the official portal or submit your CV through the button below before the deadline.</p>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline" id="modalSaveJobBtn">
+          <i class="fa-regular fa-bookmark"></i> Save Job
+        </button>
+        <a href="#" target="_blank" rel="noopener" class="btn btn-primary" id="modalApplyOfficialBtn">
+          Apply on Official Portal <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Post a Job Modal (Allows instant adding of new verified jobs) -->
+  <div class="modal-overlay" id="postJobModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div>
+          <h2>Post a Verified Job</h2>
+          <p class="modal-subhead">Add a new verified job listing to the Pakistan live feed</p>
+        </div>
+        <button class="modal-close-btn" id="closePostModalBtn">&times;</button>
+      </div>
+
+      <form id="postJobForm" class="modal-body form-grid">
+        <div class="form-group full-width">
+          <label for="postTitle">Job Title *</label>
+          <input type="text" id="postTitle" placeholder="e.g. Assistant Director (BPS-17) ya Senior React Developer" required>
+        </div>
+
+        <div class="form-group">
+          <label for="postCompany">Company / Department Name *</label>
+          <input type="text" id="postCompany" placeholder="e.g. FPSC / Systems Limited / Meezan Bank" required>
+        </div>
+
+        <div class="form-group">
+          <label for="postLocation">City / Location *</label>
+          <select id="postLocation" required>
+            <option value="Karachi">Karachi</option>
+            <option value="Lahore">Lahore</option>
+            <option value="Islamabad">Islamabad</option>
+            <option value="Rawalpindi">Rawalpindi</option>
+            <option value="Peshawar">Peshawar</option>
+            <option value="Quetta">Quetta</option>
+            <option value="Faisalabad">Faisalabad</option>
+            <option value="Multan">Multan</option>
+            <option value="Remote Pakistan">Remote Pakistan</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="postCategory">Category *</label>
+          <select id="postCategory" required>
+            <option value="Government">Government / Public Sector</option>
+            <option value="IT & Software">IT & Software</option>
+            <option value="Banking & Finance">Banking & Finance</option>
+            <option value="Health & Medical">Health & Medical</option>
+            <option value="Education">Education</option>
+            <option value="Engineering">Engineering</option>
+            <option value="Marketing & Sales">Marketing & Sales</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="postJobType">Job Type</label>
+          <select id="postJobType">
+            <option value="Full-Time">Full-Time</option>
+            <option value="Remote">Remote</option>
+            <option value="Contract">Contract</option>
+            <option value="Part-Time">Part-Time</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="postSalary">Estimated Salary / Scale *</label>
+          <input type="text" id="postSalary" placeholder="e.g. Rs 90,000 - 140,000 / BPS-17" required>
+        </div>
+
+        <div class="form-group">
+          <label for="postExperience">Experience Level</label>
+          <select id="postExperience">
+            <option value="Fresh">Fresh / Entry Level</option>
+            <option value="Mid-Level">Mid-Level (2-4 Yrs)</option>
+            <option value="Senior">Senior Level (5+ Yrs)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="postDeadline">Last Date to Apply *</label>
+          <input type="date" id="postDeadline" required>
+        </div>
+
+        <div class="form-group">
+          <label for="postApplyUrl">Official Apply URL *</label>
+          <input type="url" id="postApplyUrl" placeholder="https://company.com/apply" required>
+        </div>
+
+        <div class="form-group full-width">
+          <label for="postDescription">Job Description & Responsibilities *</label>
+          <textarea id="postDescription" rows="3" placeholder="Job ka maqsad aur bunyadi zimedaariyan..." required></textarea>
+        </div>
+
+        <div class="form-group full-width">
+          <label for="postRequirements">Requirements (Comma separated) *</label>
+          <input type="text" id="postRequirements" placeholder="e.g. BS Computer Science, 2 Years Experience, Good Communication" required>
+        </div>
+
+        <div class="form-group full-width">
+          <label for="postVerifyProof">Verification Source / Gazette Reference</label>
+          <input type="text" id="postVerifyProof" placeholder="e.g. Verified via Official Gazette / Express Newspaper Ad Dated 20th">
+        </div>
+
+        <div class="modal-footer full-width">
+          <button type="button" class="btn btn-outline" id="cancelPostBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> Publish Verified Job</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. Saved Jobs Drawer / Modal -->
+  <div class="modal-overlay" id="savedJobsModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div>
+          <h2><i class="fa-solid fa-bookmark text-primary"></i> Saved Jobs</h2>
+          <p class="modal-subhead">Aapki save ki hui verified jobs</p>
+        </div>
+        <button class="modal-close-btn" id="closeSavedModalBtn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="savedJobsContainer" class="saved-jobs-list">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/data.js"></script>
+  <script src="js/live-sync.js"></script>
+  <script src="js/modal.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
